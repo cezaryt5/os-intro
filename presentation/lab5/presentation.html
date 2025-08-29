@@ -1,0 +1,109 @@
+<section>
+<section id="выполнение-лабораторной-работы"
+class="title-slide slide level1">
+<h1>Выполнение лабораторной работы</h1>
+
+</section>
+<section id="менеджер-паролей-pass" class="title-slide slide level2">
+<h2>Менеджер паролей pass</h2>
+
+</section>
+<section id="установка" class="slide level3">
+<h3>Установка</h3>
+<h4 id="fedora">Fedora</h4>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Установка pass и gopass  </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install pass pass-otp  </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install gopass  </span></code></pre></div>
+</section>
+<section id="настройка" class="slide level3">
+<h3>Настройка</h3>
+<h4 id="ключи-gpg">Ключи GPG</h4>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Просмотр списка ключей  </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gpg</span> <span class="at">--list-secret-keys</span>  </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Создание нового ключа (если отсутствует)  </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">gpg</span> <span class="at">--full-generate-key</span>  </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Инициализация хранилища pass  </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> init <span class="op">&lt;</span>gpg-id or email<span class="op">&gt;</span>  </span></code></pre></div>
+<h4 id="синхронизация-с-git">Синхронизация с git</h4>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Инициализация git для pass  </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> git init  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Добавление удаленного репозитория  </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> git remote add origin git@github.com:<span class="op">&lt;</span>git_username<span class="op">&gt;</span>/<span class="op">&lt;</span>git_repo<span class="op">&gt;</span>.git  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Синхронизация  </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> git pull  </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> git push  </span></code></pre></div>
+</section>
+<section id="интеграция-с-браузером" class="slide level3">
+<h3>Интеграция с браузером</h3>
+<h4 id="установка-browserpass">Установка browserpass</h4>
+<p><strong>Репозиторий:</strong> <a
+href="https://github.com/browserpass/browserpass-extension">browserpass-extension</a></p>
+<p><strong>Native messaging:</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fedora  </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf copr enable maximbaz/browserpass  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install browserpass  </span></code></pre></div>
+</section>
+<section id="работа-с-паролями" class="slide level3">
+<h3>Работа с паролями</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Добавление пароля  </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> insert <span class="pp">[</span><span class="ss">OPTIONAL_DIR</span><span class="pp">]</span>/<span class="pp">[</span><span class="ss">FILENAME</span><span class="pp">]</span>  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Отображение пароля  </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> <span class="pp">[</span><span class="ss">OPTIONAL_DIR</span><span class="pp">]</span>/<span class="pp">[</span><span class="ss">FILENAME</span><span class="pp">]</span>  </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Обновление пароля  </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pass</span> generate <span class="at">--in-place</span> FILENAME  </span></code></pre></div>
+</section>
+<section id="управление-конфигурацией-с-помощью-chezmoi"
+class="slide level3">
+<h3>Управление конфигурацией с помощью chezmoi</h3>
+<h4 id="установка-дополнительного-по">Установка дополнительного ПО</h4>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf <span class="at">-y</span> install <span class="dt">\ </span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>         <span class="ex">dunst</span> <span class="dt">\ </span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>         <span class="ex">fontawesome-fonts</span> <span class="dt">\ </span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         <span class="ex">powerline-fonts</span> <span class="dt">\ </span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>         <span class="ex">light</span> <span class="dt">\ </span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>         <span class="ex">fuzzel</span> <span class="dt">\ </span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>         <span class="ex">swaylock</span> <span class="dt">\ </span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>         <span class="ex">kitty</span> <span class="dt">\ </span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>         <span class="ex">waybar</span> swaybg <span class="dt">\ </span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>         <span class="ex">wl-clipboard</span> <span class="dt">\ </span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>         <span class="ex">mpv</span> <span class="dt">\ </span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>         <span class="ex">grim</span> <span class="dt">\ </span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>         <span class="ex">slurp</span>  </span></code></pre></div>
+<h4 id="настройка-chezmoi">Настройка chezmoi</h4>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Установка chezmoi  </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> <span class="at">-c</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">wget</span> <span class="at">-qO-</span> chezmoi.io/get<span class="va">)</span><span class="st">&quot;</span>  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Создание репозитория dotfiles  </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> repo create dotfiles <span class="at">--template</span><span class="op">=</span><span class="st">&quot;yamadharma/dotfiles-template&quot;</span> <span class="at">--private</span>  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Инициализация chezmoi  </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">chezmoi</span> init git@github.com:<span class="op">&lt;</span>username<span class="op">&gt;</span>/dotfiles.git  </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Просмотр изменений  </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">chezmoi</span> diff  </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Применение изменений  </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">chezmoi</span> apply <span class="at">-v</span>  </span></code></pre></div>
+</section>
+<section id="вывод" class="slide level3">
+<h3>Вывод</h3>
+<p>Менеджер паролей <code>pass</code> обеспечивает безопасное хранение и
+синхронизацию данных через GPG-шифрование и git. Интеграция с браузером
+через browserpass и автоматизация настройки через chezmoi позволяет
+эффективно управлять учетными данными и конфигурациями на нескольких
+устройствах.</p>
+</section>
+</section>

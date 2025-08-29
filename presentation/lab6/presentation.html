@@ -1,0 +1,135 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучение базовых команд оболочки для работы с каталогами и
+файлами.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Переход в каталог /tmp</li>
+<li>Просмотр содержимого каталога /tmp</li>
+<li>Проверка наличия подкаталога cron в /var/spool</li>
+<li>Просмотр содержимого домашнего каталога</li>
+<li>Создание и удаление каталогов</li>
+<li>Использование опций команды ls</li>
+<li>Работа с историей команд</li>
+</ol>
+</section>
+<section id="переход-в-каталог-tmp" class="slide level1">
+<h1>Переход в каталог /tmp</h1>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /tmp  </span></code></pre></div>
+<figure>
+<img data-src="images/lab6-1.png" alt="lab6-1" />
+<figcaption aria-hidden="true">lab6-1</figcaption>
+</figure>
+</section>
+<section id="содержимое-каталога-tmp" class="slide level1">
+<h1>Содержимое каталога /tmp</h1>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span>      <span class="co"># подробный список с правами доступа  </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>      <span class="co"># показывает скрытые файлы  </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span>     <span class="co"># комбинация предыдущих опций  </span></span></code></pre></div>
+<figure>
+<img data-src="images/lab6-2.png" alt="lab6-2" />
+<figcaption aria-hidden="true">lab6-2</figcaption>
+</figure>
+</section>
+<section id="проверка-наличия-подкаталога-cron" class="slide level1">
+<h1>Проверка наличия подкаталога cron</h1>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /var/spool/cron  <span class="co"># подкаталог существует  </span></span></code></pre></div>
+<figure>
+<img data-src="images/lab6-3.png" alt="lab6-3" />
+<figcaption aria-hidden="true">lab6-3</figcaption>
+</figure>
+</section>
+<section id="создание-и-удаление-каталогов" class="slide level1">
+<h1>Создание и удаление каталогов</h1>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> newdir  </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ~/newdir/morefun  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> letters memos misk  </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> letters memos misk  </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> newdir  <span class="co"># удаление с подкаталогами  </span></span></code></pre></div>
+</section>
+<section id="опции-команды-ls" class="slide level1">
+<h1>Опции команды ls</h1>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-R</span>  <span class="co"># рекурсивный вывод содержимого каталогов  </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lt</span>  <span class="co"># сортировка по времени последнего изменения  </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="at">--time-style</span><span class="op">=</span>+%H:%M  </span></code></pre></div>
+</section>
+<section id="основные-команды" class="slide level1">
+<h1>Основные команды</h1>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> cd    <span class="co"># смена текущего каталога  </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> pwd   <span class="co"># вывод полного пути текущего каталога  </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> mkdir <span class="co"># создание каталогов (-p для вложенных)  </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> rmdir <span class="co"># удаление пустых каталогов  </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> rm    <span class="co"># удаление файлов и каталогов (-r для рекурсивного удаления)  </span></span></code></pre></div>
+</section>
+<section id="работа-с-историей-команд" class="slide level1">
+<h1>Работа с историей команд</h1>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">history</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 10  </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">!123</span>     <span class="co"># повтор команды под номером 123  </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">!!</span>       <span class="co"># повтор последней команды  </span></span></code></pre></div>
+<p><img data-src="images/lab6-4.png" alt="lab6-4" /><br />
+<img data-src="images/lab6-5.png" alt="lab6-5" /><br />
+<img data-src="images/lab6-6.png" alt="lab6-6" /></p>
+</section>
+<section id="выводы" class="slide level1">
+<h1>Выводы</h1>
+<p>Освоены базовые команды работы с файловой системой:<br />
+- Навигация: <code>cd</code>, <code>pwd</code><br />
+- Просмотр содержимого: <code>ls</code> с опциями <code>-l</code>,
+<code>-a</code>, <code>-R</code>, <code>-t</code><br />
+- Управление каталогами: <code>mkdir</code>, <code>rmdir</code>,
+<code>rm -r</code><br />
+- История команд: <code>history</code>, <code>!n</code></p>
+</section>
+<section id="контрольные-вопросы" class="slide level1">
+<h1>Контрольные вопросы</h1>
+<ol type="1">
+<li><p><strong>Что такое командная строка?</strong><br />
+Интерфейс для ввода команд в виде текстовых выражений.</p></li>
+<li><p><strong>Как определить абсолютный путь текущего
+каталога?</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>  </span></code></pre></div></li>
+<li><p><strong>Как показать только типы файлов и их имена?</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1, $9}&#39;</span>  </span></code></pre></div></li>
+<li><p><strong>Как отобразить скрытые файлы?</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>  </span></code></pre></div></li>
+<li><p><strong>Как удалить файл и каталог?</strong></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> file.txt  </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> directory_name  </span></code></pre></div></li>
+<li><p><strong>Как посмотреть историю команд?</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">history</span>  </span></code></pre></div></li>
+<li><p><strong>Как использовать историю для модифицированного
+выполнения?</strong></p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!123:s/old/new/</span>  </span></code></pre></div></li>
+<li><p><strong>Пример запуска нескольких команд в одной
+строке</strong></p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> test <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> test <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;Ошибка&quot;</span>  </span></code></pre></div></li>
+<li><p><strong>Символы экранирования</strong></p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello </span><span class="dt">\$</span><span class="st">USER&quot;</span>  <span class="co"># $USER не интерпретируется  </span></span></code></pre></div></li>
+<li><p><strong>Информация ls -l</strong><br />
+Права, количество жестких ссылок, владелец, группа, размер, дата,
+имя.</p></li>
+<li><p><strong>Относительный путь</strong><br />
+<code>bash       cd labs/lab6  # относительно текущего каталога       cd ../../lab6 # относительный путь из подкаталога</code></p></li>
+<li><p><strong>Информация об команде</strong><br />
+<code>bash       man ls</code></p></li>
+<li><p><strong>Автодополнение команд</strong><br />
+Клавиша <code>Tab</code> для автодополнения имен файлов/команд.</p></li>
+</ol>
+</section>

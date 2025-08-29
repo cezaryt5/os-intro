@@ -1,0 +1,136 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучить базовые функции текстового редактора Emacs, включая
+навигацию, редактирование текста, управление буферами и окнами, а также
+работу с регулярными выражениями.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Редактирование текста в Emacs</li>
+<li>Навигация в Emacs</li>
+<li>Управление буферами</li>
+<li>Управление окнами</li>
+<li>Работа с регулярными выражениями</li>
+</ol>
+</section>
+<section id="редактирование-текста" class="slide level1">
+<h1>Редактирование текста</h1>
+<h2 id="основные-операции">Основные операции</h2>
+<ul>
+<li>Строка удалена с помощью <code>C-k</code></li>
+<li>Вставка строки в конец файла выполнена через <code>C-y</code></li>
+<li>Выделение области и копирование через <code>C-space</code> +
+<code>M-w</code></li>
+<li>Отмена действия с помощью <code>C-/</code></li>
+</ul>
+<figure>
+<img data-src="images/lab7-1.png" alt="Режим поиска и замены в Emacs" />
+<figcaption aria-hidden="true">Режим поиска и замены в
+Emacs</figcaption>
+</figure>
+</section>
+<section id="навигация" class="slide level1">
+<h1>Навигация</h1>
+<h2 id="перемещение-курсора">Перемещение курсора</h2>
+<ul>
+<li>Перемещение курсора в начало строки <code>C-a</code> и в конец
+строки <code>C-e</code></li>
+<li>Переход к началу буфера <code>M-&lt;</code> и к концу буфера
+<code>M-&gt;</code></li>
+</ul>
+</section>
+<section id="управление-буферами" class="slide level1">
+<h1>Управление буферами</h1>
+<h2 id="основные-команды">Основные команды</h2>
+<ul>
+<li>Список буферов <code>C-x C-b</code></li>
+<li>Переключение между буферами <code>C-x b</code></li>
+<li>Закрытие окна <code>C-x 0</code></li>
+</ul>
+<figure>
+<img data-src="images/lab7-2.png"
+alt="Редактор Emacs с разделенными окнами" />
+<figcaption aria-hidden="true">Редактор Emacs с разделенными
+окнами</figcaption>
+</figure>
+</section>
+<section id="управление-окнами" class="slide level1">
+<h1>Управление окнами</h1>
+<h2 id="разделение-экрана">Разделение экрана</h2>
+<ul>
+<li>Вертикальное разделение <code>C-x 3</code></li>
+<li>Горизонтальное разделение <code>C-x 2</code></li>
+<li>Работа с несколькими буферами в разделенных окнах</li>
+</ul>
+</section>
+<section id="пример-программы" class="slide level1">
+<h1>Пример программы</h1>
+<h2 id="листинг-программы-lab07.sh">Листинг программы lab07.sh</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">HELL</span><span class="op">=</span>Hello</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> hello</span> <span class="kw">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">LOCAL</span> HELLO=World</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$HELLO</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$HELLO</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span></code></pre></div>
+</section>
+<section id="выводы" class="slide level1">
+<h1>Выводы</h1>
+<p>Emacs демонстрирует высокую гибкость и мощные возможности для
+редактирования текста, однако его сложная система комбинаций клавиш
+требует значительного времени для освоения. Работа с буферами и окнами
+позволяет эффективно управлять несколькими файлами одновременно.</p>
+</section>
+<section id="контрольные-вопросы" class="slide level1">
+<h1>Контрольные вопросы</h1>
+<h2 id="характеристика-emacs">1. Характеристика Emacs</h2>
+<p>Emacs - это расширяемый, самодокументируемый текстовый редактор с
+поддержкой множества режимов и плагинов.</p>
+<h2 id="сложности-для-новичков">2. Сложности для новичков</h2>
+<ul>
+<li>Обилие комбинаций клавиш (например, <code>C-x C-f</code> для
+открытия файла)</li>
+<li>Нетрадиционная система буферов и окон</li>
+<li>Отсутствие визуального выделения режимов (в отличие от vi/vim)</li>
+</ul>
+<h2 id="буфер-и-окно-в-emacs">3. Буфер и окно в Emacs</h2>
+<ul>
+<li><strong>Буфер</strong> - это область памяти, содержащая текст файла
+или результат команды</li>
+<li><strong>Окно</strong> - это визуальное отображение буфера на
+экране</li>
+</ul>
+<h2 id="ограничение-на-буферы">4. Ограничение на буферы</h2>
+<p>Нет, количество буферов не ограничено. Буферы создаются динамически
+при открытии файлов или выполнении команд.</p>
+<h2 id="стандартные-буферы-при-запуске">5. Стандартные буферы при
+запуске</h2>
+<ul>
+<li><code>*scratch*</code> - буфер для временного текста</li>
+<li><code>*Messages*</code> - журнал системных сообщений</li>
+<li><code>*GNU Emacs*</code> - стартовый экран с информацией</li>
+</ul>
+<h2 id="ввод-комбинации-c-c">6. Ввод комбинации <code>C-c |</code></h2>
+<p>Сначала нажать и удерживать <code>Ctrl</code>, затем последовательно
+нажать <code>c</code> и <code>|</code>. Для <code>C-c C-|</code> -
+удерживать <code>Ctrl</code>, нажать <code>c</code>, отпустить, затем
+снова удерживать <code>Ctrl</code> и нажать <code>|</code>.</p>
+<h2 id="разделение-окна">7. Разделение окна</h2>
+<ul>
+<li>Вертикально: <code>C-x 3</code></li>
+<li>Горизонтально: <code>C-x 2</code></li>
+</ul>
+<h2 id="файл-настроек-emacs">8. Файл настроек Emacs</h2>
+<p>Конфигурационный файл: <code>~/.emacs.d/init.el</code> или
+<code>~/.emacs</code></p>
+<h2 id="функция-клавиши-c-g">9. Функция клавиши <code>C-g</code></h2>
+<p>Прерывает текущую команду или ввод. Может быть переназначена через
+<code>global-set-key</code> в конфигурации.</p>
+<h2 id="сравнение-vi-и-emacs">10. Сравнение vi и Emacs</h2>
+<p>Emacs предпочтительнее для комплексной работы (редактирование +
+терминал + документация), но vi имеет более логичную систему навигации и
+редактирования через моды.</p>
+</section>

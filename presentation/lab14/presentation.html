@@ -1,0 +1,185 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучение скриптов оболочки и демонстрация их функциональности через
+практические примеры.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Создание пользовательского просмотрщика страниц руководства
+(my_man.sh)</li>
+<li>Создание генератора случайных букв (random_letters.sh)</li>
+<li>Создание базовой реализации семафора (samaphore.sh)</li>
+</ol>
+</section>
+<section id="пользовательский-просмотрщик-страниц-руководства"
+class="slide level1">
+<h1>Пользовательский просмотрщик страниц руководства</h1>
+<h2 id="код-скрипта-my_man.sh">Код скрипта my_man.sh</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Used : </span><span class="va">$0</span><span class="st"> &lt;command&gt;&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="va">cmd</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">man_page</span><span class="op">=</span><span class="st">&quot;/usr/share/man/man1/</span><span class="va">${cmd}</span><span class="st">.1.gz&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$man_page</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">zcat</span> <span class="st">&quot;</span><span class="va">$man_page</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">less</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Command isnt found &#39;</span><span class="va">$cmd</span><span class="st">&#39; &quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h2 id="назначение-и-функциональность">Назначение и
+функциональность</h2>
+<ul>
+<li><strong>Назначение</strong>: Упрощенный просмотрщик страниц
+руководства</li>
+<li><strong>Функциональность</strong>:
+<ul>
+<li>Проверяет, предоставлен ли аргумент команды</li>
+<li>Ищет страницу руководства в стандартном месте
+(/usr/share/man/man1/)</li>
+<li>Если найдено, использует <code>zcat</code> для распаковки и
+<code>less</code> для отображения страницы руководства</li>
+<li>В противном случае отображает сообщение об ошибке</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/my_man-content.png" alt="Вывод скрипта My Man" />
+<figcaption aria-hidden="true">Вывод скрипта My Man</figcaption>
+</figure>
+</section>
+<section id="генератор-случайных-букв" class="slide level1">
+<h1>Генератор случайных букв</h1>
+<h2 id="код-скрипта-random_letters.sh">Код скрипта
+random_letters.sh</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">length</span><span class="op">=</span><span class="va">${1</span><span class="op">:-</span>10<span class="va">}</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_letter()</span> <span class="kw">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">rand</span><span class="op">=</span><span class="va">$((</span> <span class="va">RANDOM</span> <span class="op">%</span> <span class="dv">26</span> <span class="va">))</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&quot;</span><span class="dt">\\</span><span class="st">x</span><span class="va">$(</span><span class="bu">printf</span> %02x <span class="va">$((</span><span class="dv">65</span> <span class="op">+</span> <span class="va">rand)))</span><span class="st">&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="kw">((</span><span class="va">i</span><span class="op">=</span><span class="dv">0</span><span class="kw">;</span> <span class="va">i</span><span class="op">&lt;</span><span class="va">length</span><span class="kw">;</span> <span class="va">i</span><span class="op">++</span><span class="kw">));</span> <span class="cf">do</span>  </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span><span class="op">+=</span><span class="va">$(</span><span class="ex">generate_letter</span><span class="va">)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$result</span></span></code></pre></div>
+<h2 id="назначение-и-функциональность-1">Назначение и
+функциональность</h2>
+<ul>
+<li><strong>Назначение</strong>: Генерирует случайную строку из
+заглавных букв</li>
+<li><strong>Функциональность</strong>:
+<ul>
+<li>Принимает необязательный аргумент для длины строки (по умолчанию
+10)</li>
+<li>Использует функцию для генерации случайных заглавных букв ASCII</li>
+<li>Объединяет буквы в результирующую строку</li>
+<li>Выводит случайную строку</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/random_run.png"
+alt="Вывод скрипта случайных букв" />
+<figcaption aria-hidden="true">Вывод скрипта случайных букв</figcaption>
+</figure>
+</section>
+<section id="базовая-реализация-семафора" class="slide level1">
+<h1>Базовая реализация семафора</h1>
+<h2 id="код-скрипта-samaphore.sh">Код скрипта samaphore.sh</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># variables</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">t1</span><span class="op">=</span>5</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">t2</span><span class="op">=</span>3</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">sem_file</span><span class="op">=</span><span class="st">&quot;/tmp/semaphore.lock&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># our function </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wait_for_semaphore()</span> <span class="kw">{</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Wainting for the resource...&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$sem_file</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="va">$t1</span> <span class="ot">-gt</span> 0  <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sleep</span> 1</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">((</span><span class="va">t1</span><span class="op">--</span><span class="kw">))</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$sem_file</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">touch</span> <span class="st">&quot;</span><span class="va">$sem_file</span><span class="st">&quot;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Process captured resouces&quot;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot; Couldnt capture the resouces&quot;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exit</span> 1</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># capturing resources </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="ex">wait_for_semaphore</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># usinng the resources</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Used resource (</span><span class="va">$$</span><span class="st">) in </span><span class="va">$t2</span><span class="st"> sec..&quot;</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> <span class="va">$t2</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co"># freeing resourcces</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$sem_file</span><span class="st">&quot;</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Resourcees freed </span><span class="va">$$</span><span class="st">&quot;</span> </span></code></pre></div>
+<h2 id="назначение-и-функциональность-2">Назначение и
+функциональность</h2>
+<ul>
+<li><strong>Назначение</strong>: Демонстрирует базовую реализацию
+семафора в bash для управления ресурсами</li>
+<li><strong>Функциональность</strong>:
+<ul>
+<li>Использует файл блокировки (/tmp/semaphore.lock) в качестве
+семафора</li>
+<li>Реализует механизм ожидания с таймаутом (5 секунд)</li>
+<li>Когда процесс получает ресурс, он создает файл блокировки</li>
+<li>Процесс использует ресурс в течение указанного времени (3
+секунды)</li>
+<li>После использования ресурса удаляет файл блокировки для освобождения
+ресурса</li>
+<li>Включает ID процесса в выходные сообщения для идентификации</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/samaphore_run.png" alt="Вывод скрипта семафора" />
+<figcaption aria-hidden="true">Вывод скрипта семафора</figcaption>
+</figure>
+</section>
+<section id="дополнительные-демонстрации" class="slide level1">
+<h1>Дополнительные демонстрации</h1>
+<h2 id="другие-изображения">Другие изображения</h2>
+<p>Также есть другие PNG-файлы, которые показывают различные запуски или
+аспекты скриптов:</p>
+<ol type="1">
+<li><strong>contentrandom.png</strong> - Показывает дополнительный вывод
+из скрипта случайных букв</li>
+<li><strong>samapohore.png</strong> - Показывает еще одно выполнение
+скрипта семафора</li>
+</ol>
+</section>
+<section id="резюме" class="slide level1">
+<h1>Резюме</h1>
+<h2 id="основные-концепции-программирования-в-bash">Основные концепции
+программирования в bash</h2>
+<p>Эта лабораторная работа сосредоточена на написании скриптов bash с
+тремя основными примерами:</p>
+<ol type="1">
+<li><strong>Обработка файлов и выполнение команд</strong>
+(my_man.sh)</li>
+<li><strong>Генерация случайных чисел и манипуляции со строками</strong>
+(random_letters.sh)</li>
+<li><strong>Синхронизация процессов и управление ресурсами</strong>
+(samaphore.sh)</li>
+</ol>
+<h2 id="визуальные-доказательства">Визуальные доказательства</h2>
+<p>PNG-файлы предоставляют визуальные доказательства выполнения и вывода
+скриптов, помогая понять их функциональность.</p>
+</section>

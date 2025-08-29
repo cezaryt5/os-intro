@@ -1,0 +1,382 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучение принципов программирования в командном процессоре Unix,
+создание скриптов для автоматизации задач и обработки данных.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Создание скрипта для резервного копирования</li>
+<li>Создание командного файла для обработки аргументов</li>
+<li>Создание аналога команды <code>ls</code></li>
+<li>Создание скрипта для подсчета файлов по форматам</li>
+</ol>
+</section>
+<section id="скрипт-для-резервного-копирования" class="slide level1">
+<h1>Скрипт для резервного копирования</h1>
+<h2 id="код-скрипта-backup.sh">Код скрипта backup.sh</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Скрипт для резервного копирования файлов</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка наличия аргументов</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-lt</span> 2 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Использование: </span><span class="va">$0</span><span class="st"> &lt;исходный_каталог&gt; &lt;каталог_назначения&gt;&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Получение аргументов</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="va">SOURCE_DIR</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="va">DEST_DIR</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="va">BACKUP_DATE</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%Y%m%d_%H%M%S<span class="va">)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">ARCHIVE_NAME</span><span class="op">=</span><span class="st">&quot;backup_</span><span class="va">${BACKUP_DATE}</span><span class="st">.tar.gz&quot;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка существования исходного каталога</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$SOURCE_DIR</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Ошибка: Исходный каталог &#39;</span><span class="va">$SOURCE_DIR</span><span class="st">&#39; не существует.&quot;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Создание каталога назначения, если он не существует</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$DEST_DIR</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$DEST_DIR</span><span class="st">&quot;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Ошибка: Не удалось создать каталог назначения &#39;</span><span class="va">$DEST_DIR</span><span class="st">&#39;.&quot;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exit</span> 1</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Создан каталог назначения: </span><span class="va">$DEST_DIR</span><span class="st">&quot;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Создание архива</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Создание резервной копии из &#39;</span><span class="va">$SOURCE_DIR</span><span class="st">&#39; в &#39;</span><span class="va">$DEST_DIR</span><span class="st">/</span><span class="va">$ARCHIVE_NAME</span><span class="st">&#39;...&quot;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-czf</span> <span class="st">&quot;</span><span class="va">$DEST_DIR</span><span class="st">/</span><span class="va">$ARCHIVE_NAME</span><span class="st">&quot;</span> <span class="at">-C</span> <span class="st">&quot;</span><span class="va">$SOURCE_DIR</span><span class="st">&quot;</span> .</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка успешности создания архива</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Резервное копирование успешно завершено.&quot;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Архив сохранен как: </span><span class="va">$DEST_DIR</span><span class="st">/</span><span class="va">$ARCHIVE_NAME</span><span class="st">&quot;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Размер архива: </span><span class="va">$(</span><span class="fu">du</span> <span class="at">-h</span> <span class="st">&quot;</span><span class="va">$DEST_DIR</span><span class="st">/</span><span class="va">$ARCHIVE_NAME</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Ошибка: Не удалось создать архив.&quot;</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div>
+</section>
+<section id="командный-файл-для-обработки-аргументов"
+class="slide level1">
+<h1>Командный файл для обработки аргументов</h1>
+<h2 id="код-скрипта-args.sh">Код скрипта args.sh</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Скрипт для обработки аргументов командной строки</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Общее количество аргументов: </span><span class="va">$#</span><span class="st">&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Имя скрипта: </span><span class="va">$0</span><span class="st">&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Вывод всех аргументов</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Все аргументы: </span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Вывод аргументов по отдельности</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Аргументы по отдельности:&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>1</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> arg <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Аргумент </span><span class="va">$count</span><span class="st">: </span><span class="va">$arg</span><span class="st">&quot;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">count</span><span class="op">=</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Вывод аргументов в обратном порядке</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Аргументы в обратном порядке:&quot;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="kw">((</span> <span class="va">i</span><span class="op">=</span><span class="va">$#</span><span class="kw">;</span> <span class="va">i</span><span class="op">&gt;</span><span class="dv">0</span><span class="kw">;</span> <span class="va">i</span><span class="op">--</span> <span class="kw">));</span> <span class="cf">do</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Аргумент </span><span class="va">$i</span><span class="st">: </span><span class="va">${</span><span class="op">!</span><span class="va">i}</span><span class="st">&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div>
+</section>
+<section id="аналог-команды-ls" class="slide level1">
+<h1>Аналог команды <code>ls</code></h1>
+<h2 id="код-скрипта-myls.sh">Код скрипта myls.sh</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Скрипт-аналог команды ls</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Функция для вывода справки</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">show_help()</span> <span class="kw">{</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Использование: </span><span class="va">$0</span><span class="st"> [опции] [каталог]&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Опции:&quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;  -a    Показать все файлы, включая скрытые&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;  -l    Подробный формат вывода&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;  -h    Показать эту справку&quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 0</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Инициализация переменных</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="va">show_hidden</span><span class="op">=</span>0</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="va">long_format</span><span class="op">=</span>0</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">&quot;.&quot;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Обработка опций</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;alh&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="va">$opt</span> <span class="kw">in</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="ss">a</span><span class="kw">)</span> <span class="va">show_hidden</span><span class="op">=</span>1 <span class="cf">;;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="ss">l</span><span class="kw">)</span> <span class="va">long_format</span><span class="op">=</span>1 <span class="cf">;;</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="ss">h</span><span class="kw">)</span> <span class="ex">show_help</span> <span class="cf">;;</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">\?</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Неизвестная опция: -</span><span class="va">$OPTARG</span><span class="st">&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Сдвиг обработанных опций</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> <span class="va">$((OPTIND</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Если указан каталог, используем его</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-gt</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="va">directory</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка существования каталога</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$directory</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Ошибка: Каталог &#39;</span><span class="va">$directory</span><span class="st">&#39; не существует.&quot;</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Получение списка файлов</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$show_hidden</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="va">files</span><span class="op">=</span><span class="va">($(</span><span class="fu">ls</span> <span class="at">-a</span> <span class="st">&quot;</span><span class="va">$directory</span><span class="st">&quot;</span><span class="va">))</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="va">files</span><span class="op">=</span><span class="va">($(</span><span class="fu">ls</span> <span class="st">&quot;</span><span class="va">$directory</span><span class="st">&quot;</span><span class="va">))</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Вывод результатов</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Содержимое каталога: </span><span class="va">$directory</span><span class="st">&quot;</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;------------------------&quot;</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${files</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Пропускаем . и .. если не показываем скрытые файлы</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$show_hidden</span> <span class="ot">-eq</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;.&quot;</span> <span class="kw">||</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;..&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="va">full_path</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$directory</span><span class="st">/</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$long_format</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Тип файла</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>            <span class="va">type</span><span class="op">=</span><span class="st">&quot;d&quot;</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">[</span> <span class="ot">-L</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>            <span class="va">type</span><span class="op">=</span><span class="st">&quot;l&quot;</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>            <span class="va">type</span><span class="op">=</span><span class="st">&quot;-&quot;</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">fi</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Права доступа</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>        <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-r</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">r&quot;</span><span class="kw">;</span> <span class="cf">else</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">-&quot;</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-w</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">w&quot;</span><span class="kw">;</span> <span class="cf">else</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">-&quot;</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-x</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">x&quot;</span><span class="kw">;</span> <span class="cf">else</span> <span class="va">permissions</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${permissions}</span><span class="st">-&quot;</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Размер и дата модификации</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>        <span class="va">size</span><span class="op">=</span><span class="va">$(</span><span class="fu">du</span> <span class="at">-h</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1</span><span class="va">)</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>        <span class="va">mod_date</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-r</span> <span class="st">&quot;</span><span class="va">$full_path</span><span class="st">&quot;</span> <span class="st">&quot;+%Y-%m-%d %H:%M&quot;</span><span class="va">)</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$type$permissions</span><span class="st"> </span><span class="va">$size</span><span class="st"> </span><span class="va">$mod_date</span><span class="st"> </span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div>
+</section>
+<section id="подсчет-файлов-по-форматам" class="slide level1">
+<h1>Подсчет файлов по форматам</h1>
+<h2 id="код-скрипта-countfiles.sh">Код скрипта countfiles.sh</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Скрипт для подсчета файлов по форматам</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка наличия аргумента</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-lt</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Использование: </span><span class="va">$0</span><span class="st"> &lt;каталог&gt;&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Получение аргумента</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка существования каталога</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$directory</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Ошибка: Каталог &#39;</span><span class="va">$directory</span><span class="st">&#39; не существует.&quot;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Подсчет файлов по форматам в каталоге: </span><span class="va">$directory</span><span class="st">&quot;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;------------------------------------------------&quot;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Получение списка всех файлов рекурсивно</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="va">files</span><span class="op">=</span><span class="va">$(</span><span class="fu">find</span> <span class="st">&quot;</span><span class="va">$directory</span><span class="st">&quot;</span> <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">sort</span><span class="va">)</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Инициализация ассоциативного массива для подсчета</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">formats_count</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Подсчет файлов по расширениям</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$files</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Получение расширения файла</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="va">extension</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${file</span><span class="op">##</span><span class="pp">*</span>.<span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Если файл не имеет расширения, считаем его как &quot;без расширения&quot;</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$extension</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        <span class="va">extension</span><span class="op">=</span><span class="st">&quot;без расширения&quot;</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="va">extension</span><span class="op">=</span><span class="st">&quot;.</span><span class="va">$extension</span><span class="st">&quot;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Увеличиваем счетчик для данного расширения</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">${formats_count</span><span class="op">[</span><span class="va">$extension</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="va">formats_count</span><span class="op">[</span><span class="va">$extension</span><span class="op">]=</span>1</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="va">formats_count</span><span class="op">[</span><span class="va">$extension</span><span class="op">]=</span><span class="va">$((formats_count</span><span class="op">[</span><span class="va">$extension</span><span class="op">]</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Вывод результатов</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Формат | Количество файлов&quot;</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;------------------------&quot;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> format <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${</span><span class="op">!</span><span class="va">formats_count</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="va">count</span><span class="op">=</span><span class="va">${formats_count</span><span class="op">[</span><span class="va">$format</span><span class="op">]</span><span class="va">}</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Правильное склонение слова &quot;файл&quot;</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$count</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        <span class="va">word</span><span class="op">=</span><span class="st">&quot;файл&quot;</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">[</span> <span class="va">$count</span> <span class="ot">-ge</span> 2 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="va">$count</span> <span class="ot">-le</span> 4 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="va">word</span><span class="op">=</span><span class="st">&quot;файла&quot;</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        <span class="va">word</span><span class="op">=</span><span class="st">&quot;файлов&quot;</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$format</span><span class="st">: </span><span class="va">${formats_count</span><span class="op">[</span><span class="va">$format</span><span class="op">]</span><span class="va">}</span><span class="st"> </span><span class="va">$word</span><span class="st">&quot;</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Общее количество файлов</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="va">total</span><span class="op">=</span>0</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> count <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${formats_count</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="va">total</span><span class="op">=</span><span class="va">$((total</span> <span class="op">+</span> <span class="va">count))</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;------------------------&quot;</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Всего: </span><span class="va">$total</span><span class="st"> файлов&quot;</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div>
+</section>
+<section id="выводы" class="slide level1">
+<h1>Выводы</h1>
+<ol type="1">
+<li>Я освоил основы создания скриптов на Bash, включая работу с
+переменными, условными операторами и циклами.</li>
+<li>Научился работать с аргументами командной строки и обрабатывать их в
+скриптах.</li>
+<li>Изучил механизм архивации файлов в Unix с помощью команды tar.</li>
+<li>Освоил работу с файловой системой: проверку существования файлов и
+каталогов, получение информации о файлах.</li>
+<li>Научился использовать ассоциативные массивы для подсчета и
+группировки данных.</li>
+<li>Понял принципы создания пользовательских аналогов стандартных команд
+Unix.</li>
+</ol>
+</section>
+<section id="контрольные-вопросы" class="slide level1">
+<h1>Контрольные вопросы</h1>
+<h2 id="что-такое-командная-оболочка">1. Что такое командная
+оболочка?</h2>
+<p>Командная оболочка (shell) - это программа, которая предоставляет
+интерфейс между пользователем и операционной системой. Она
+интерпретирует команды пользователя и передает их ядру ОС для
+выполнения.</p>
+<h2 id="что-такое-posix">2. Что такое POSIX?</h2>
+<p>POSIX (Portable Operating System Interface) - это набор стандартов,
+определяющих интерфейс между операционной системой и прикладными
+программами, обеспечивающий совместимость между различными
+UNIX-подобными операционными системами.</p>
+<h2 id="основные-возможности-командных-оболочек">3. Основные возможности
+командных оболочек</h2>
+<ul>
+<li>Выполнение команд и программ</li>
+<li>Перенаправление ввода/вывода</li>
+<li>Конвейерная обработка данных (pipes)</li>
+<li>Управление заданиями (jobs)</li>
+<li>Подстановка имен файлов (wildcards)</li>
+<li>Программирование с использованием переменных, условий, циклов</li>
+</ul>
+<h2 id="переменные-окружения">4. Переменные окружения</h2>
+<p>Переменная окружения - это динамическая переменная в операционной
+системе, которая содержит информацию, используемую одной или несколькими
+программами. Например, PATH определяет каталоги для поиска исполняемых
+файлов.</p>
+<h2 id="команды-set-и-unset">5. Команды set и unset</h2>
+<ul>
+<li><code>set</code> используется для установки или отображения
+переменных оболочки</li>
+<li><code>unset</code> используется для удаления переменных или функций
+из окружения оболочки</li>
+</ul>
+<h2 id="определение-функций-в-bash">6. Определение функций в bash</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">function_name()</span> <span class="kw">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># команды</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ex">value</span>  <span class="co"># необязательно</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h2 id="команды-let-и-read">7. Команды let и read</h2>
+<ul>
+<li><code>let</code> выполняет арифметические операции над
+переменными</li>
+<li><code>read</code> считывает строку из стандартного ввода и
+присваивает ее переменным</li>
+</ul>
+<h2 id="позиционные-параметры">8. Позиционные параметры</h2>
+<p>Позиционные параметры - это специальные переменные в скриптах,
+которые содержат аргументы командной строки. $0 содержит имя скрипта, $1
+- первый аргумент, $2 - второй и т.д.</p>
+<h2 id="возврат-значений-из-функций">9. Возврат значений из функций</h2>
+<p>Функции в bash возвращают значения через: - Код возврата (0-25) с
+помощью команды <code>return</code> - Вывод результата в stdout с
+помощью <code>echo</code> или <code>printf</code> - Изменение глобальных
+переменных внутри функции</p>
+<h2 id="локальные-переменные">10. Локальные переменные</h2>
+<p>Локальные переменные - это переменные, объявленные с ключевым словом
+<code>local</code> внутри функции. Они видны только внутри функции.</p>
+<h2 id="рекурсия-в-bash">11. Рекурсия в bash</h2>
+<p>Рекурсия - это процесс, при котором функция вызывает сама себя:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factorial()</span> <span class="kw">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$1</span> <span class="ot">-le</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> 1</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">local</span> <span class="va">temp</span><span class="op">=</span><span class="va">$(</span><span class="ex">factorial</span> <span class="va">$((</span> <span class="va">$1</span> <span class="op">-</span> <span class="dv">1</span> <span class="va">)))</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="va">$((</span> <span class="va">$1</span> <span class="op">*</span> <span class="va">temp</span> <span class="va">))</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h2 id="командная-подстановка">12. Командная подстановка</h2>
+<p>Командная подстановка - это механизм, позволяющий использовать вывод
+одной команды как аргумент для другой команды или для присваивания
+переменной: `command` или $(command).</p>
+<h2 id="массивы-в-bash">13. Массивы в bash</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Создание массива</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span><span class="st">&quot;element1&quot;</span> <span class="st">&quot;element2&quot;</span> <span class="st">&quot;element3&quot;</span><span class="va">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Доступ к элементам</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">${array</span><span class="op">[</span><span class="dv">0</span><span class="op">]</span><span class="va">}</span>  <span class="co"># первый элемент</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">${array</span><span class="op">[@]</span><span class="va">}</span>  <span class="co"># все элементы</span></span></code></pre></div>
+<h2 id="регулярные-выражения">14. Регулярные выражения</h2>
+<p>Регулярные выражения - это шаблоны, используемые для поиска и
+обработки текста. В Unix регулярные выражения используются во многих
+утилитах, таких как grep, sed, awk.</p>
+<h2 id="обработка-ошибок-в-bash">15. Обработка ошибок в bash</h2>
+<p>Обработка ошибок в bash осуществляется через: - Проверка кода
+возврата команд с помощью <code>$?</code> - Использование условных
+операторов - Использование конструкции <code>set -e</code> для
+автоматического завершения скрипта при ошибке - Использование
+конструкции <code>trap</code> для перехвата сигналов</p>
+</section>

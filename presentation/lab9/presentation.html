@@ -1,0 +1,178 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучение возможностей Midnight Commander (mc) для работы с файлами,
+каталогами и встроенным редактором.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Изучение Midnight Commander через man</li>
+<li>Исследование интерфейса mc</li>
+<li>Операции с файлами в mc</li>
+<li>Использование меню панелей</li>
+<li>Работа с подменю “Файл”</li>
+<li>Использование подменю “Команда”</li>
+<li>Настройки mc</li>
+<li>Работа с встроенным редактором mc</li>
+</ol>
+</section>
+<section id="изучение-midnight-commander" class="slide level1">
+<h1>Изучение Midnight Commander</h1>
+<h2 id="изучение-mc-через-man">Изучение mc через man</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> mc</span></code></pre></div>
+<h2 id="запуск-mc-и-исследование-интерфейса">Запуск mc и исследование
+интерфейса</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mc</span></span></code></pre></div>
+<ul>
+<li>Структура: две панели, строка меню, командная строка</li>
+<li>Меню: File, Command, Options, Right, Left, Info, Help</li>
+</ul>
+<figure>
+<img data-src="images/lab9-1.png" alt="lab9-1" />
+<figcaption aria-hidden="true">lab9-1</figcaption>
+</figure>
+</section>
+<section id="операции-в-mc" class="slide level1">
+<h1>Операции в mc</h1>
+<h2 id="управление-панелями">Управление панелями</h2>
+<ul>
+<li><code>F9</code> → <code>Left/Right</code> → <code>List</code> →
+смена каталога</li>
+<li>Выделение файлов: <code>Insert</code> (для выделения),
+<code>F5</code> (копирование), <code>F6</code> (перемещение)</li>
+<li>Информация о файлах: <code>F10</code> → <code>Info</code> →
+<code>File</code> → <code>Properties</code></li>
+</ul>
+<figure>
+<img data-src="images/lab9-2.png" alt="lab9-2" />
+<figcaption aria-hidden="true">lab9-2</figcaption>
+</figure>
+</section>
+<section id="использование-меню-панелей" class="slide level1">
+<h1>Использование меню панелей</h1>
+<h2 id="операции-с-файлами">Операции с файлами</h2>
+<ul>
+<li>Копирование файлов между панелями через <code>F5</code></li>
+<li>Просмотр подробной информации: <code>F10</code> → <code>View</code>
+→ <code>Long format</code></li>
+</ul>
+</section>
+<section id="подменю-файл" class="slide level1">
+<h1>Подменю “Файл”</h1>
+<h2 id="операции-с-файлами-1">Операции с файлами</h2>
+<ul>
+<li>Просмотр содержимого: <code>F3</code> (View)</li>
+<li>Редактирование: <code>F4</code> (Edit) → внесение изменений без
+сохранения</li>
+<li>Создание каталога: <code>F7</code> → ввод имени</li>
+<li>Копирование файлов в новый каталог: выделение → <code>F5</code> →
+выбор целевого каталога</li>
+</ul>
+</section>
+<section id="подменю-команда" class="slide level1">
+<h1>Подменю “Команда”</h1>
+<h2 id="поиск-и-выполнение-команд">Поиск и выполнение команд</h2>
+<ul>
+<li>Поиск файла с <code>main</code> в <code>.c</code>/<code>.cpp</code>:
+<code>F9</code> → <code>Command</code> → <code>Find file</code> →
+параметры: <code>*.c</code> и содержимое <code>main</code></li>
+<li>Повтор команды: <code>F9</code> → <code>Command</code> →
+<code>History</code></li>
+<li>Переход в домашний каталог: <code>F9</code> → <code>Command</code> →
+<code>Go to</code> → <code>Home</code></li>
+<li>Анализ файлов меню: <code>F9</code> → <code>Command</code> →
+<code>Edit extension file</code></li>
+</ul>
+<figure>
+<img data-src="images/lab9-3.png" alt="lab9-3" />
+<figcaption aria-hidden="true">lab9-3</figcaption>
+</figure>
+</section>
+<section id="настройки-mc" class="slide level1">
+<h1>Настройки mc</h1>
+<h2 id="интерфейс-и-отображение">Интерфейс и отображение</h2>
+<ul>
+<li>Режимы отображения: <code>F9</code> → <code>Options</code> →
+<code>Layout</code> → Full screen, Double width</li>
+<li>Отображение скрытых файлов: <code>F9</code> → <code>Options</code> →
+<code>Panel</code> → <code>Show hidden files</code></li>
+</ul>
+</section>
+<section id="встроенный-редактор-mc" class="slide level1">
+<h1>Встроенный редактор mc</h1>
+<h2 id="создание-и-редактирование-файлов">Создание и редактирование
+файлов</h2>
+<ol type="1">
+<li><p>Создание файла:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mc</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">F9</span> → File → New file → text.txt</span></code></pre></div></li>
+<li><p>Редактирование через mc:</p>
+<ul>
+<li>Вставка текста: <code>Ctrl+Ins</code> (копирование из другого
+файла)</li>
+<li>Удаление строки: <code>Ctrl+Y</code></li>
+<li>Выделение фрагмента: <code>F3</code> (начало выделения) →
+<code>F3</code> (окончание) → <code>F5</code> (копирование) или
+<code>F6</code> (перемещение)</li>
+<li>Сохранение: <code>F2</code></li>
+<li>Отмена: <code>Ctrl+U</code></li>
+<li>Навигация: <code>Alt+End</code> (в конец файла),
+<code>Alt+Home</code> (в начало)</li>
+</ul></li>
+</ol>
+<figure>
+<img data-src="images/lab9-4.png" alt="lab9-4" />
+<figcaption aria-hidden="true">lab9-4</figcaption>
+</figure>
+</section>
+<section id="подсветка-синтаксиса" class="slide level1">
+<h1>Подсветка синтаксиса</h1>
+<h2 id="работа-с-кодом">Работа с кодом</h2>
+<ul>
+<li>Открытие файла <code>.c</code>/<code>.java</code>: <code>F4</code> →
+выбор файла</li>
+<li>Включение/выключение: <code>F9</code> → <code>Options</code> →
+<code>Syntax highlighting</code></li>
+</ul>
+</section>
+<section id="выводы" class="slide level1">
+<h1>Выводы</h1>
+<p>В ходе работы освоены: - Навигация и управление файлами в mc - Поиск
+файлов с условиями через <code>Find file</code> - Редактирование текста
+и кода с подсветкой синтаксиса - Настройка интерфейса mc под задачи
+пользователя</p>
+</section>
+<section id="контрольные-вопросы" class="slide level1">
+<h1>Контрольные вопросы</h1>
+<h2 id="режимы-mc">1. Режимы mc</h2>
+<ul>
+<li><strong>Shell-режим</strong>: Основной интерфейс с двумя панелями
+для навигации по файловой системе, строкой меню и командной строкой</li>
+<li><strong>Редактор</strong>: Активируется через <code>F4</code>,
+поддерживает синтаксис подсветку, поиск/замена, отмену изменений
+(<code>Ctrl+U</code>)</li>
+<li><strong>Просмотр</strong>: Активируется через <code>F3</code>,
+позволяет читать содержимое файлов без редактирования, поддерживает
+поиск (<code>F7</code>)</li>
+</ul>
+<h2 id="операции-с-файлами-2">2. Операции с файлами</h2>
+<ul>
+<li><strong>Копирование</strong>: В mc <code>F5</code>, в shell
+<code>cp source destination</code></li>
+<li><strong>Перемещение</strong>: В mc <code>F6</code>, в shell
+<code>mv source destination</code></li>
+<li><strong>Удаление</strong>: В mc <code>F8</code>, в shell
+<code>rm file</code> или <code>rm -r directory</code></li>
+</ul>
+<h2 id="меню-панели-mc">3. Меню панели mc</h2>
+<ul>
+<li><code>Left/Right</code>: Переключение между панелями</li>
+<li><code>Info</code>: Отображение метаданных файла</li>
+<li><code>Help</code>: Справка по горячим клавишам</li>
+<li><code>List</code>: Список файлов с фильтрацией</li>
+<li><code>New</code>: Создание новых файлов/каталогов</li>
+</ul>
+</section>

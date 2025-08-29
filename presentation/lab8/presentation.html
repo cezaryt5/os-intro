@@ -1,0 +1,115 @@
+<section id="цель-работы" class="slide level1">
+<h1>Цель работы</h1>
+<p>Изучение и применение команд Linux для работы с файлами, процессами и
+системными ресурсами.</p>
+</section>
+<section id="задание" class="slide level1">
+<h1>Задание</h1>
+<ol type="1">
+<li>Вход в систему</li>
+<li>Работа с файлами и каталогами</li>
+<li>Фильтрация и поиск файлов</li>
+<li>Управление процессами</li>
+<li>Системный мониторинг</li>
+</ol>
+</section>
+<section id="вход-в-систему" class="slide level1">
+<h1>Вход в систему</h1>
+<p>Использовано имя пользователя: <code>ceazer</code></p>
+</section>
+<section id="работа-с-файлами" class="slide level1">
+<h1>Работа с файлами</h1>
+<h2 id="запись-файлов-из-etc-и-домашнего-каталога">Запись файлов из /etc
+и домашнего каталога</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc <span class="op">&gt;</span> ~/file.txt <span class="kw">&amp;&amp;</span> <span class="fu">ls</span> ~/ <span class="op">&gt;&gt;</span> ~/file.txt</span></code></pre></div>
+<p>Файл <code>file.txt</code> создан в домашнем каталоге.</p>
+<h2 id="фильтрация-.conf-файлов">Фильтрация .conf файлов</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">&quot;\.conf$&quot;</span> ~/file.txt <span class="op">&gt;</span> ~/conf.txt</span></code></pre></div>
+<p>Создан файл <code>conf.txt</code> с перечнем .conf файлов.</p>
+</section>
+<section id="поиск-файлов" class="slide level1">
+<h1>Поиск файлов</h1>
+<h2 id="файлы-начинающиеся-с-c">Файлы, начинающиеся с ‘c’</h2>
+<p>Варианты: 1. <code>ls ~/c*</code> 2. <code>find ~/ -name "c*"</code>
+3. <code>ls ~/ | grep "^c"</code></p>
+<h2 id="постраничный-вывод-файлов-etc-начинающихся-с-h">Постраничный
+вывод файлов /etc, начинающихся с ‘h’</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/h<span class="pp">*</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
+</section>
+<section id="управление-процессами" class="slide level1">
+<h1>Управление процессами</h1>
+<h2 id="фоновый-процесс-для-записи-файлов-с-log">Фоновый процесс для
+записи файлов с ‘log’</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span> <span class="fu">ls</span> ~/log<span class="pp">*</span> <span class="op">&gt;&gt;</span> ~/logfile<span class="kw">;</span> <span class="fu">sleep</span> 10<span class="kw">;</span> <span class="cf">done</span> <span class="kw">&amp;</span></span></code></pre></div>
+<h2 id="удаление-logfile">Удаление ~/logfile</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> ~/logfile</span></code></pre></div>
+<h2 id="запуск-gedit-в-фоне">Запуск gedit в фоне</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gedit</span> <span class="kw">&amp;</span></span></code></pre></div>
+</section>
+<section id="определение-pid-и-завершение-процессов"
+class="slide level1">
+<h1>Определение PID и завершение процессов</h1>
+<h2 id="определение-pid-gedit">Определение PID gedit</h2>
+<p>Команды:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pgrep</span> gedit</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pidof</span> gedit</span></code></pre></div>
+<h2 id="завершение-gedit-через-kill">Завершение gedit через kill</h2>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="op">&lt;</span>PID<span class="op">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-9</span> <span class="op">&lt;</span>PID<span class="op">&gt;</span>  <span class="co"># Если процесс не завершается</span></span></code></pre></div>
+</section>
+<section id="системный-мониторинг" class="slide level1">
+<h1>Системный мониторинг</h1>
+<h2 id="информация-о-дисковом-пространстве">Информация о дисковом
+пространстве</h2>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> df <span class="kw">&amp;&amp;</span> <span class="fu">df</span> <span class="at">-h</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> du <span class="kw">&amp;&amp;</span> <span class="fu">du</span> <span class="at">-sh</span> ~/</span></code></pre></div>
+<h2 id="поиск-директорий-в-домашнем-каталоге">Поиск директорий в
+домашнем каталоге</h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> ~/ <span class="at">-type</span> d</span></code></pre></div>
+</section>
+<section id="выводы" class="slide level1">
+<h1>Выводы</h1>
+<p>В ходе работы освоены команды: - Работа с файлами: <code>ls</code>,
+<code>grep</code>, <code>find</code> - Управление процессами:
+<code>ps</code>, <code>kill</code> - Системный мониторинг:
+<code>df</code>, <code>du</code></p>
+</section>
+<section id="контрольные-вопросы" class="slide level1">
+<h1>Контрольные вопросы</h1>
+<ol type="1">
+<li><p><strong>Потоки ввода/вывода</strong>: stdin (0), stdout (1),
+stderr (2).</p></li>
+<li><p><strong>&gt; и &gt;&gt;</strong>: <code>&gt;</code>
+перезаписывает файл, <code>&gt;&gt;</code> дополняет его.</p></li>
+<li><p><strong>Конвейер</strong>: Передача вывода одной команды на вход
+другой (например, <code>ps aux | grep "gedit"</code>).</p></li>
+<li><p><strong>Процесс</strong>: Активная программа в памяти с
+выделенными ресурсами. Программа — статический код.</p></li>
+<li><p><strong>PID/GID</strong>: Идентификатор процесса/группы
+процессов.</p></li>
+<li><p><strong>Задачи</strong>: Управление через <code>&amp;</code>
+(фон), <code>fg</code>, <code>bg</code>, <code>jobs</code>.</p></li>
+<li><p><strong>top/htop</strong>: Мониторинг активных процессов.
+<code>htop</code> — интерактивный инструмент с цветовой схемой.</p></li>
+<li><p><strong>find</strong>: Поиск файлов. Пример:
+<code>find ~/ -name "*.txt"</code>.</p></li>
+<li><p><strong>Поиск по содержимому</strong>:
+<code>grep -r "текст" /каталог</code>.</p></li>
+<li><p><strong>Свободное место</strong>: <code>df -h</code>.</p></li>
+<li><p><strong>Размер домашнего каталога</strong>:
+<code>du -sh ~/</code>.</p></li>
+<li><p><strong>Завершение зависшего процесса</strong>:
+<code>kill -9 &lt;PID&gt;</code>.</p></li>
+</ol>
+</section>
